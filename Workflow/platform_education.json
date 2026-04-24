@@ -1,0 +1,2449 @@
+[
+  {
+    "_id": "89e7723c223090cab4d0788f",
+    "userId": "47373bb7-a511-4954-be03-7b9c667d1051",
+    "name": "sign in & sign up",
+    "variables": {},
+    "secrets": {},
+    "nodes": [
+      {
+        "position": {
+          "x": -1069.4474106459938,
+          "y": 66.15651578195978
+        },
+        "width": 64,
+        "height": 64,
+        "id": "incu4c40g0h9mjpjq2zsrng3",
+        "type": "trigger",
+        "data": {
+          "description": "Listens for POST requests on /signup. Expects { email, password } in the request body.",
+          "showRunningStatus": false,
+          "_morphing": false,
+          "name": "webhook",
+          "label": "Signup Trigger",
+          "inputs": {},
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "method": "post",
+            "respondType": "deferred",
+            "responseCode": 200,
+            "path": "/signup"
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": -492.64287955819134,
+          "y": 489.1390945213368
+        },
+        "width": 64,
+        "height": 64,
+        "id": "j8rabt6bsiw18vyn388zssa2",
+        "type": "trigger",
+        "data": {
+          "description": "Listens for POST requests on /login. Expects { email, password } in the request body.",
+          "showRunningStatus": false,
+          "_morphing": false,
+          "name": "webhook",
+          "label": "Login Trigger",
+          "inputs": {},
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "method": "all",
+            "respondType": "deferred",
+            "responseCode": 200,
+            "path": "/login"
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": 981.0000024788874,
+          "y": -163.4947832017487
+        },
+        "width": 64,
+        "height": 64,
+        "id": "f5g270hymzfn7me7j9i4g804",
+        "type": "action",
+        "data": {
+          "description": "Returns { success: true } to the frontend.",
+          "showRunningStatus": false,
+          "_morphing": false,
+          "name": "respond-to-webhook",
+          "label": "Success Response",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "responseCode": 200,
+            "responseHeaders": {
+              "Access-Control-Allow-Origin": "*"
+            },
+            "responseBody": {
+              "success": true
+            }
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": 855.4568515350217,
+          "y": 368.50993904762544
+        },
+        "width": 64,
+        "height": 64,
+        "selected": false,
+        "id": "zuk7k799ef714pud33yjg09w",
+        "type": "action",
+        "data": {
+          "description": "Returns { success: true } to the frontend.",
+          "showRunningStatus": false,
+          "_morphing": false,
+          "name": "respond-to-webhook",
+          "label": "Success Response",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "responseCode": 200,
+            "responseBody": "[[ outputs.BuildLoginResponse.success ]]"
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": 602.9958140746868,
+          "y": -88.13400917155121
+        },
+        "width": 64,
+        "height": 64,
+        "id": "mmccqjiq3ge750gbhr9txkx4",
+        "type": "action",
+        "data": {
+          "description": "Inserts the new user's email and hashed password into accounts_database.",
+          "showRunningStatus": true,
+          "_morphing": false,
+          "name": "postgres action",
+          "label": "Insert User",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "port": 5432,
+            "schemaName": "public",
+            "connectionTimeoutMillis": 5000,
+            "host": "YOUR_SUPABASE_HOST",
+            "user": "YOUR_SUPABASE_USER",
+            "password": "YOUR_SUPABASE_PASSWORD",
+            "database": "postgres",
+            "tableName": "accounts_database",
+            "operation": "Execute SQL query",
+            "executeQueryParams": {
+              "query": "INSERT INTO accounts_database (email, password)  VALUES ('{{outputs.Signup Trigger.success.body.email}}', '{{outputs.Hash Password.success.hash}}')"
+            }
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": -38.06777974525247,
+          "y": 260.06339200824743
+        },
+        "width": 64,
+        "height": 64,
+        "id": "esrxqc4f3py6pgozbqjitc2b",
+        "type": "action",
+        "data": {
+          "description": "Queries accounts_database to check if the email is already registered.",
+          "showRunningStatus": true,
+          "_morphing": false,
+          "name": "postgres action",
+          "label": "Check Email",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "port": 5432,
+            "schemaName": "public",
+            "connectionTimeoutMillis": 5000,
+            "host": "YOUR_SUPABASE_HOST",
+            "user": "YOUR_SUPABASE_USER",
+            "password": "YOUR_SUPABASE_PASSWORD",
+            "database": "postgres",
+            "tableName": "accounts_database",
+            "operation": "Execute SQL query",
+            "executeQueryParams": {
+              "query": "SELECT * FROM accounts_database WHERE email = '{{outputs.Signup Trigger.success.body.email}}'"
+            },
+            "replaceEmptyStringWithNull": false,
+            "selectParams": {
+              "returnAll": false
+            },
+            "insertParams": {
+              "skipOnConflict": false
+            },
+            "deleteParams": {
+              "cascade": false
+            }
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": 291.05662030192383,
+          "y": 267.11734586322336
+        },
+        "width": 64,
+        "height": 68,
+        "id": "hq3pow47uzzipq4txtpq6xea",
+        "type": "utility",
+        "data": {
+          "description": "If rowCount == 0, email is free to register (True). Otherwise rejects (False).",
+          "showRunningStatus": false,
+          "_morphing": false,
+          "name": "if-else",
+          "label": "Email Available?",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "true": {
+              "label": "True",
+              "isConnectable": null
+            },
+            "false": {
+              "label": "False",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "condition": "{{outputs.Check Email.success.rowCount}} == 0\n"
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": 680.4879851936613,
+          "y": 210.61985698910962
+        },
+        "width": 64,
+        "height": 64,
+        "id": "ey2tpkaq7bi5uhch2r6xd9fg",
+        "type": "action",
+        "data": {
+          "description": "Returns { success: false, error: \"Email already exists\" } to the frontend.",
+          "showRunningStatus": false,
+          "_morphing": false,
+          "name": "respond-to-webhook",
+          "label": "Email Exists Response",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "responseCode": 202,
+            "responseHeaders": {
+              "Access-Control-Allow-Origin": "*"
+            },
+            "responseBody": {
+              "success": false,
+              "error": "Email already exists"
+            }
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": 5.347329219428175,
+          "y": 463.4996035383659
+        },
+        "width": 64,
+        "height": 64,
+        "id": "rmnp3czdiaboaaseamvoqbzx",
+        "type": "action",
+        "data": {
+          "description": "Queries accounts_database for a row matching both email and hashed password.",
+          "showRunningStatus": true,
+          "_morphing": false,
+          "name": "postgres action",
+          "label": "Verify Credentials",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "port": 5432,
+            "schemaName": "public",
+            "connectionTimeoutMillis": 5000,
+            "host": "YOUR_SUPABASE_HOST",
+            "user": "YOUR_SUPABASE_USER",
+            "password": "YOUR_SUPABASE_PASSWORD",
+            "database": "postgres",
+            "tableName": "accounts_database",
+            "operation": "Execute SQL query",
+            "executeQueryParams": {
+              "query": "SELECT * FROM accounts_database  WHERE email = '{{outputs.Login Trigger.success.body.email}}'  AND password = '{{outputs.Hash Password.success.hash}}'"
+            },
+            "replaceEmptyStringWithNull": false,
+            "selectParams": {
+              "returnAll": false
+            },
+            "insertParams": {
+              "skipOnConflict": false
+            },
+            "deleteParams": {
+              "cascade": false
+            }
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": 397.79573317672236,
+          "y": 426.6889343055973
+        },
+        "width": 64,
+        "height": 68,
+        "id": "ukurslxm0u45nmpngybjdqe2",
+        "type": "utility",
+        "data": {
+          "description": "If rowCount > 0, credentials match (True). Otherwise rejects (False).",
+          "showRunningStatus": false,
+          "_morphing": false,
+          "name": "if-else",
+          "label": "Credentials Valid?",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "true": {
+              "label": "True",
+              "isConnectable": null
+            },
+            "false": {
+              "label": "False",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "condition": "{{outputs.Verify Credentials.success.rowCount}} > 0\n"
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": 624.2804902980422,
+          "y": 643.7847765777669
+        },
+        "width": 64,
+        "height": 64,
+        "selected": false,
+        "id": "dye9mfjienlgptiwtm6oloio",
+        "type": "action",
+        "data": {
+          "description": "Returns { success: false, error: \"Invalid email or password\" } to the frontend.",
+          "showRunningStatus": false,
+          "_morphing": false,
+          "name": "respond-to-webhook",
+          "label": "Invalid Credentials Response",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "responseCode": 200,
+            "responseBody": {
+              "success": false,
+              "error": "Invalid email or password"
+            }
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": -274.36542130567784,
+          "y": 264.050030547776
+        },
+        "width": 64,
+        "height": 64,
+        "id": "sv8z309f0j5rinmeuq7roc6n",
+        "type": "action",
+        "data": {
+          "description": "Hashes the incoming password using SHA256 before any database operation.",
+          "showRunningStatus": true,
+          "_morphing": false,
+          "name": "crypto",
+          "label": "Hash Password",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "hash": {
+              "outputPropertyName": "hash",
+              "type": "SHA256",
+              "value": "{{outputs.Signup Trigger.success.body.password}}",
+              "encoding": "hex"
+            },
+            "operation": "Hash",
+            "generate": {
+              "length": 16
+            },
+            "hmac": {
+              "outputPropertyName": "hmac"
+            }
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": -247.75741287019355,
+          "y": 493.37285388069216
+        },
+        "width": 64,
+        "height": 64,
+        "id": "u7w9a4r026cybgbrnoce330y",
+        "type": "action",
+        "data": {
+          "description": "Hashes the incoming password to compare against the stored hash.",
+          "showRunningStatus": true,
+          "_morphing": false,
+          "name": "crypto",
+          "label": "Hash Password",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "hash": {
+              "outputPropertyName": "hash",
+              "type": "SHA256",
+              "value": "{{outputs.Login Trigger.success.body.password}}",
+              "encoding": "hex"
+            },
+            "operation": "Hash"
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": -290.05897333525706,
+          "y": 747.3664665470543
+        },
+        "width": 64,
+        "height": 64,
+        "id": "xw966jvf65jcjv803l0e7ffd",
+        "type": "action",
+        "data": {
+          "description": "Queries accounts_database for a row matching both email and hashed password.",
+          "showRunningStatus": true,
+          "_morphing": false,
+          "name": "postgres action",
+          "label": "FetchCourses",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "port": 5432,
+            "schemaName": "public",
+            "connectionTimeoutMillis": 5000,
+            "host": "YOUR_SUPABASE_HOST",
+            "user": "YOUR_SUPABASE_USER",
+            "password": "YOUR_SUPABASE_PASSWORD",
+            "database": "postgres",
+            "tableName": "courses",
+            "operation": "Execute SQL query",
+            "executeQueryParams": {
+              "query": "SELECT * FROM courses WHERE is_default = true UNION SELECT c.* FROM courses c JOIN user_courses uc ON uc.course_id = c.id WHERE uc.user_id = '{{outputs.CoursesWebhook.success.query.userId}}'"
+            },
+            "replaceEmptyStringWithNull": false,
+            "selectParams": {
+              "returnAll": false
+            },
+            "insertParams": {
+              "skipOnConflict": false
+            },
+            "deleteParams": {
+              "cascade": false
+            }
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": -20.914530995577397,
+          "y": 733.0520197321201
+        },
+        "width": 64,
+        "height": 64,
+        "id": "royg6g64896gj3w44wcwuc0n",
+        "type": "action",
+        "data": {
+          "description": "Executes custom JavaScript code on the input data.",
+          "showRunningStatus": true,
+          "_morphing": false,
+          "name": "function",
+          "label": "FormatCourses",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "code": "return outputs.FetchCourses.success.rows"
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": -501.1794570772769,
+          "y": 733.294661744654
+        },
+        "width": 64,
+        "height": 64,
+        "id": "l4eccrehjhbvhrfp34fytsen",
+        "type": "trigger",
+        "data": {
+          "description": "Triggers workflow on incoming HTTP requests",
+          "showRunningStatus": false,
+          "_morphing": false,
+          "name": "webhook",
+          "label": "CoursesWebhook",
+          "inputs": {},
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "method": "get",
+            "respondType": "deferred",
+            "responseCode": 200,
+            "path": "/courses"
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": 273.32810944699474,
+          "y": 751.2357873785137
+        },
+        "width": 64,
+        "height": 64,
+        "id": "yo06a5iue1x6zq113kq1rykg",
+        "type": "action",
+        "data": {
+          "description": "Responds to a webhook with a specific message.",
+          "showRunningStatus": false,
+          "_morphing": false,
+          "name": "respond-to-webhook",
+          "label": "CoursesResponse",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "responseCode": 200,
+            "responseBody": "[[ outputs.FormatCourses.success ]]"
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": -888.705485174183,
+          "y": 70.33800894617795
+        },
+        "width": 64,
+        "height": 64,
+        "selected": true,
+        "id": "a87xl3rxayxgljrd5a5q3lb4",
+        "type": "action",
+        "data": {
+          "description": "Validates incoming email and password fields",
+          "showRunningStatus": true,
+          "_morphing": false,
+          "name": "function",
+          "label": "ValidateInputs",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "code": "const email = \"{{outputs.Signup Trigger.success.body.email}}\";\nconst password = \"{{outputs.Signup Trigger.success.body.password}}\";\nconst confirmpassword = \"{{outputs.Signup Trigger.success.body.confirmpassword}}\";\n\nif (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/.test(email)) {\n  return { error: \"invalid_email\" }\n}\n\nif (password !== confirmpassword) {\n  return { error: \"passwords_dont_match\" }\n}\n\nif (password.length < 8 || !/(?=.*[0-9])(?=.*[A-Z])/.test(password)) {\n  return { error: \"password_too_weak\" }\n}\n\nreturn { error: null }"
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": -254.0777761999886,
+          "y": -154.91796486349915
+        },
+        "width": 64,
+        "height": 64,
+        "id": "csaiu03929eyqodw4vhswe98",
+        "type": "action",
+        "data": {
+          "description": "Returns { success: false, error: \"Email already exists\" } to the frontend.",
+          "showRunningStatus": false,
+          "_morphing": false,
+          "name": "respond-to-webhook",
+          "label": "wrong email format response",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "responseCode": 202,
+            "responseHeaders": {
+              "Access-Control-Allow-Origin": "*"
+            },
+            "responseBody": {
+              "success": false,
+              "error": "Wrong Email format , try 'user@domaine.com'"
+            }
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": 657.6666330147507,
+          "y": 380.3340370948353
+        },
+        "width": 64,
+        "height": 64,
+        "selected": false,
+        "id": "rwwdvtxa3ndi26on2ifn1nyw",
+        "type": "action",
+        "data": {
+          "description": "Executes custom JavaScript code on the input data.",
+          "showRunningStatus": true,
+          "_morphing": false,
+          "name": "function",
+          "label": "BuildLoginResponse",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "code": "return {\n  success: true,\n  userId: outputs[\"Verify Credentials\"].success.rows[0].id,\n  email: outputs[\"Verify Credentials\"].success.rows[0].email\n}"
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": -104.23384771744732,
+          "y": 2.1813348687625194
+        },
+        "width": 64,
+        "height": 64,
+        "id": "nvzj1nwcvsb7ehjfa3n8m9cg",
+        "type": "action",
+        "data": {
+          "description": "Responds to a webhook with a specific message.",
+          "showRunningStatus": false,
+          "_morphing": false,
+          "name": "respond-to-webhook",
+          "label": "not matching passwords response",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "responseCode": 200,
+            "responseBody": {
+              "success": false,
+              "error": "confirmed password not matching '"
+            }
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": -713.9412085304931,
+          "y": 66.20984386634726
+        },
+        "width": 64,
+        "height": 68,
+        "id": "hf3dobdckwy6okob1i3sz0uk",
+        "type": "utility",
+        "data": {
+          "description": "Executes different branches based on a condition",
+          "showRunningStatus": false,
+          "_morphing": false,
+          "name": "if-else",
+          "label": "Email format accurate ?",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "true": {
+              "label": "True",
+              "isConnectable": null
+            },
+            "false": {
+              "label": "False",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "condition": "outputs.ValidateInputs.success.error ==\"invalid_email\""
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": -475.12663153172514,
+          "y": 140.4585872567628
+        },
+        "width": 64,
+        "height": 86,
+        "id": "alt87vcj40i8z1bgv11hpv7y",
+        "type": "utility",
+        "data": {
+          "description": "Multi-way branching by value. Example: value 'admin' → routes to 'admin' case, 'user' → 'user' case, else → default",
+          "showRunningStatus": true,
+          "_morphing": false,
+          "name": "switch",
+          "label": "Password checks ",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "case-1": {
+              "label": "case-1",
+              "isConnectable": null
+            },
+            "case-2": {
+              "label": "case-2",
+              "isConnectable": null
+            },
+            "default": {
+              "label": "default",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "cases": [],
+            "conditions": [
+              {
+                "outputId": "case-1",
+                "condition": "outputs.ValidateInputs.success.error ==\"passwords_dont_match\""
+              },
+              {
+                "outputId": "case-2",
+                "condition": "outputs.ValidateInputs.success.error ==\"password_too_weak\""
+              }
+            ]
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": -126.10868952983964,
+          "y": 134.26614798060817
+        },
+        "width": 64,
+        "height": 64,
+        "id": "mdnar7dn6e1xyaeltm19kn94",
+        "type": "action",
+        "data": {
+          "description": "Responds to a webhook with a specific message.",
+          "showRunningStatus": false,
+          "_morphing": false,
+          "name": "respond-to-webhook",
+          "label": "Weak Password",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "responseCode": 200,
+            "responseBody": {
+              "success": false,
+              "error": "Password must be at least 8 characters, include a number and an uppercase letter."
+            }
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": -1185.7102769542407,
+          "y": 909.537386747552
+        },
+        "width": 64,
+        "height": 64,
+        "id": "m75jlogjuqy0e15nmhk863p9",
+        "type": "trigger",
+        "data": {
+          "description": "Triggers workflow on incoming HTTP requests",
+          "showRunningStatus": false,
+          "_morphing": false,
+          "name": "webhook",
+          "label": "GenerateCourseWebhook",
+          "inputs": {},
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "method": "all",
+            "respondType": "deferred",
+            "responseCode": 200,
+            "path": "/generatecourses"
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": -914.2048119768276,
+          "y": 986.2318991227187
+        },
+        "width": 64,
+        "height": 64,
+        "selected": false,
+        "id": "ce2r5hzeza8cqzp25i1c0no1",
+        "type": "action",
+        "data": {
+          "description": "Checks if a course with the given topic already exists in the database before generating a new one.",
+          "showRunningStatus": true,
+          "_morphing": false,
+          "name": "postgres action",
+          "label": "CheckCourseExists",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "port": 5432,
+            "schemaName": "public",
+            "connectionTimeoutMillis": 5000,
+            "host": "YOUR_SUPABASE_HOST",
+            "user": "YOUR_SUPABASE_USER",
+            "password": "YOUR_SUPABASE_PASSWORD",
+            "database": "postgres",
+            "tableName": "courses",
+            "operation": "Execute SQL query",
+            "executeQueryParams": {
+              "query": "SELECT * FROM courses WHERE title ILIKE '{{outputs.GenerateCourseWebhook.success.body.topic}}'"
+            }
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": -747.1366253476785,
+          "y": 1001.7557511546906
+        },
+        "width": 64,
+        "height": 68,
+        "selected": false,
+        "id": "w5ydcmzp2vqrwtroqcnhozzr",
+        "type": "utility",
+        "data": {
+          "description": "Executes different branches based on a condition",
+          "showRunningStatus": false,
+          "_morphing": false,
+          "name": "if-else",
+          "label": "CourseExists?",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "true": {
+              "label": "True",
+              "isConnectable": null
+            },
+            "false": {
+              "label": "False",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "condition": "outputs.CheckCourseExists.success.rows.length > 0"
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": -93.86901265425831,
+          "y": 1016.8573273466952
+        },
+        "width": 64,
+        "height": 64,
+        "selected": false,
+        "id": "l09y57w47wljpfpl9vc764au",
+        "type": "action",
+        "data": {
+          "description": "Checks if a course with the given topic already exists in the database before generating a new one.",
+          "showRunningStatus": true,
+          "_morphing": false,
+          "name": "postgres action",
+          "label": "AssignExistingCourse",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "port": 5432,
+            "schemaName": "public",
+            "connectionTimeoutMillis": 5000,
+            "host": "YOUR_SUPABASE_HOST",
+            "user": "YOUR_SUPABASE_USER",
+            "password": "YOUR_SUPABASE_PASSWORD",
+            "database": "postgres",
+            "tableName": "user_courses",
+            "operation": "Execute SQL query",
+            "executeQueryParams": {
+              "query": "INSERT INTO user_courses (user_id, course_id) VALUES (   '{{outputs.PrepareAssignExisting.success.userId}}'::bigint,   '{{outputs.PrepareAssignExisting.success.courseId}}'::bigint )"
+            }
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": 91.39557393422882,
+          "y": 1037.0629203108979
+        },
+        "width": 64,
+        "height": 64,
+        "selected": false,
+        "id": "d5bzlqycf3ps27fnnzn7nwii",
+        "type": "action",
+        "data": {
+          "description": "Responds to a webhook with a specific message.",
+          "showRunningStatus": false,
+          "_morphing": false,
+          "name": "respond-to-webhook",
+          "label": "GenerateCourseResponse",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "responseCode": 200,
+            "responseBody": {
+              "success": true
+            }
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": -230.69094936714845,
+          "y": 1155.7954216353958
+        },
+        "width": 64,
+        "height": 64,
+        "id": "plle0ml1zwwhqhvxi59f1hvn",
+        "type": "agent",
+        "data": {
+          "description": "An AI agent that can perform tasks using nodes as tools based on user input.",
+          "showRunningStatus": true,
+          "_morphing": false,
+          "name": "agent",
+          "label": "GenerateCourseContent",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "systemPrompt": "{{outputs.BuildPrompt.success.prompt}}",
+            "threadId": "1"
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": -451.2689807502829,
+          "y": 1383.6308498922679
+        },
+        "width": 64,
+        "height": 64,
+        "id": "e7wubc7paco0eo9vaxzyjzs9",
+        "type": "agent-llm",
+        "data": {
+          "description": "A node that uses Google's LLM models.",
+          "showRunningStatus": true,
+          "_morphing": false,
+          "name": "google-llm",
+          "label": "Google LLM",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "apiKey": "YOUR_GEMINI_API_KEY",
+            "model": "gemini-2.5-flash"
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": 194.6165364850245,
+          "y": 1273.79712648251
+        },
+        "width": 64,
+        "height": 64,
+        "id": "ag29ymle6gli129bapc8wj03",
+        "type": "action",
+        "data": {
+          "description": "Create, read, and update Google Docs documents. Manage document content and formatting.",
+          "showRunningStatus": true,
+          "_morphing": false,
+          "name": "google-docs",
+          "label": "CreateCourseDoc",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "clientId": "YOUR_GOOGLE_CLIENT_ID",
+            "clientSecret": "YOUR_GOOGLE_CLIENT_SECRET",
+            "redirectUri": "http://localhost",
+            "refreshToken": "YOUR_GOOGLE_REFRESH_TOKEN",
+            "operation": "createDocument",
+            "documentTitle": "{{outputs.GenerateCourseWebhook.success.body.topic}}"
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": 51.712178463768225,
+          "y": 1196.638754269084
+        },
+        "width": 64,
+        "height": 64,
+        "id": "cc91zjtwule0zv4iue81ha9e",
+        "type": "action",
+        "data": {
+          "description": "Executes custom JavaScript code on the input data.",
+          "showRunningStatus": true,
+          "_morphing": false,
+          "name": "function",
+          "label": "FormatCourseContent",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "code": "const content = outputs.ParseCourseJSON.success.content\n  .replace(/^#{1,3} /gm, '')      // remove # ## ###\n  .replace(/\\*\\*(.*?)\\*\\*/g, '$1') // remove **bold**\n  .replace(/\\*(.*?)\\*/g, '$1')     // remove *italic*\nconst clean = content.replace(/\\n/g, '\\\\n').replace(/\"/g, '\\\\\"')\nreturn {\n  batchRequests: `[{\"insertText\":{\"text\":\"${clean}\",\"location\":{\"index\":1}}}]`\n}"
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": 355.27579482174787,
+          "y": 1184.02530760601
+        },
+        "width": 64,
+        "height": 64,
+        "id": "xhyoejkt1jt8rsdoz8sb45jd",
+        "type": "action",
+        "data": {
+          "description": "Create, read, and update Google Docs documents. Manage document content and formatting.",
+          "showRunningStatus": true,
+          "_morphing": false,
+          "name": "google-docs",
+          "label": "FillCourseDoc",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "clientId": "YOUR_GOOGLE_CLIENT_ID",
+            "clientSecret": "YOUR_GOOGLE_CLIENT_SECRET",
+            "redirectUri": "http://localhost",
+            "refreshToken": "YOUR_GOOGLE_REFRESH_TOKEN",
+            "operation": "batchUpdateDocument",
+            "documentId": "{{outputs.CreateCourseDoc.success.documentId}}",
+            "batchUpdateRequests": "{{outputs.FormatCourseContent.success.batchRequests}}"
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": 548.6819769888817,
+          "y": 1167.2073787219113
+        },
+        "width": 64,
+        "height": 64,
+        "id": "nteoizso3rek390arxkbtnul",
+        "type": "action",
+        "data": {
+          "description": "Executes custom JavaScript code on the input data.",
+          "showRunningStatus": true,
+          "_morphing": false,
+          "name": "function",
+          "label": "BuildDriveLink",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "code": "const docId = outputs.CreateCourseDoc.success.documentId\nreturn {\n  drive_link: `https://docs.google.com/document/d/${docId}/edit?usp=sharing`\n}"
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": -6.320104418288317,
+          "y": 1407.568016777741
+        },
+        "width": 64,
+        "height": 64,
+        "id": "i6xt0kb4iw6iyvxeyignrro7",
+        "type": "action",
+        "data": {
+          "description": "Executes custom JavaScript code on the input data.",
+          "showRunningStatus": true,
+          "_morphing": false,
+          "name": "function",
+          "label": "ParseCourseJSON",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "code": "let raw = outputs.GenerateCourseContent.success\nraw = raw.replace(/```json/g, '').replace(/```/g, '').replace(/`/g, \"'\").trim()\nconst parsed = JSON.parse(raw)\nreturn parsed"
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": 769.0427804907858,
+          "y": 1195.0028965008864
+        },
+        "width": 64,
+        "height": 64,
+        "id": "d3948kqjti2jcfnbeed2nr0k",
+        "type": "action",
+        "data": {
+          "description": "Checks if a course with the given topic already exists in the database before generating a new one.",
+          "showRunningStatus": true,
+          "_morphing": false,
+          "name": "postgres action",
+          "label": "InsertCourse",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "port": 5432,
+            "schemaName": "public",
+            "connectionTimeoutMillis": 5000,
+            "host": "YOUR_SUPABASE_HOST",
+            "user": "YOUR_SUPABASE_USER",
+            "password": "YOUR_SUPABASE_PASSWORD",
+            "database": "postgres",
+            "tableName": "courses",
+            "operation": "Execute SQL query",
+            "executeQueryParams": {
+              "query": "INSERT INTO courses (title, description, tag, icon, tag_color, tag_bg, drive_link, is_default) VALUES (   '{{outputs.ParseCourseJSON.success.title}}',   '{{outputs.ParseCourseJSON.success.description}}',   '{{outputs.ParseCourseJSON.success.tag}}',   '{{outputs.ParseCourseJSON.success.icon}}',   '{{outputs.ParseCourseJSON.success.tag_color}}',   '{{outputs.ParseCourseJSON.success.tag_bg}}',   '{{outputs.BuildDriveLink.success.drive_link}}',   false ) RETURNING id"
+            },
+            "replaceEmptyStringWithNull": false,
+            "selectParams": {
+              "returnAll": false
+            },
+            "insertParams": {
+              "skipOnConflict": false
+            },
+            "deleteParams": {
+              "cascade": false
+            }
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": 1148.0270223143837,
+          "y": 1238.9133688306317
+        },
+        "width": 64,
+        "height": 64,
+        "id": "gl9d6c1ojzonpikpfd5xpvqv",
+        "type": "action",
+        "data": {
+          "description": "Checks if a course with the given topic already exists in the database before generating a new one.",
+          "showRunningStatus": true,
+          "_morphing": false,
+          "name": "postgres action",
+          "label": "AssignNewCourse",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "port": 5432,
+            "schemaName": "public",
+            "connectionTimeoutMillis": 5000,
+            "host": "YOUR_SUPABASE_HOST",
+            "user": "YOUR_SUPABASE_USER",
+            "password": "YOUR_SUPABASE_PASSWORD",
+            "database": "postgres",
+            "tableName": "user_courses",
+            "operation": "Execute SQL query",
+            "executeQueryParams": {
+              "query": "INSERT INTO user_courses (user_id, course_id) VALUES (   '{{outputs.PrepareAssignNew.success.userId}}'::bigint,   '{{outputs.PrepareAssignNew.success.courseId}}'::bigint )"
+            }
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": 1419.9055089025896,
+          "y": 1187.345313915672
+        },
+        "width": 64,
+        "height": 64,
+        "id": "csbg2yi98sg3qcqouqrxevbx",
+        "type": "action",
+        "data": {
+          "description": "Responds to a webhook with a specific message.",
+          "showRunningStatus": false,
+          "_morphing": false,
+          "name": "respond-to-webhook",
+          "label": "GenerateCourseResponse",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "responseCode": 200,
+            "responseBody": {
+              "success": true
+            }
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": -447.372695548294,
+          "y": 1226.0370546651764
+        },
+        "width": 64,
+        "height": 64,
+        "id": "hyppjsmhdr27qt9b9jv9w3d2",
+        "type": "action",
+        "data": {
+          "description": "Executes custom JavaScript code on the input data.",
+          "showRunningStatus": true,
+          "_morphing": false,
+          "name": "function",
+          "label": "BuildPrompt",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "code": "const topic = outputs.GenerateCourseWebhook.success.body.topic\nreturn {\n  prompt: `You are an expert course creator. Generate a structured course on the topic: \"${topic}\"\n\nReturn ONLY a valid JSON object with no extra text, no markdown, no backticks. The JSON must have exactly these fields:\n\n{\n  \"title\": \"use exactly this as the title: ${topic}\",\n  \"description\": \"a one sentence description of the course\",\n  \"tag\": \"a short category label (e.g. AI, Dev, Security, Networks, IoT, Data, Web)\",\n  \"icon\": \"a single relevant emoji\",\n  \"tag_color\": \"a hex color code for the tag text\",\n  \"tag_bg\": \"a lighter hex color code for the tag background\",\n  \"content\": \"the full course content with this exact structure:\\\\n# [Title]\\\\n## Introduction\\\\n[2-3 paragraphs of explanation]\\\\n## Section 1: [Title]\\\\n[1 paragraph explaining the concept, then bullet points with details]\\\\n## Section 2: [Title]\\\\n[1 paragraph explaining the concept, then bullet points with details]\\\\n## Section 3: [Title]\\\\n[1 paragraph explaining the concept, then bullet points with details]\\\\n## Section 4: [Title]\\\\n[1 paragraph explaining the concept, then bullet points with details]\\\\n## Section 5: [Title]\\\\n[1 paragraph explaining the concept, then bullet points with details]\\\\n## Conclusion\\\\n[2-3 paragraphs]\"\n}`\n}"
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": -565.168163319513,
+          "y": 960.6439651396563
+        },
+        "width": 64,
+        "height": 64,
+        "selected": false,
+        "id": "xglffaw0adg3yf5h4aesimhw",
+        "type": "action",
+        "data": {
+          "description": "Executes custom JavaScript code on the input data.",
+          "showRunningStatus": true,
+          "_morphing": false,
+          "name": "function",
+          "label": "PrepareAssignExisting",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "code": "return {\n  userId: outputs.GenerateCourseWebhook.success.body.userId,\n  courseId: outputs.CheckCourseExists.success.rows[0].id\n}"
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": 970.9792870871331,
+          "y": 1206.4533108323162
+        },
+        "width": 64,
+        "height": 64,
+        "id": "epwa3q6mz49mo8nt6cfcp2ca",
+        "type": "action",
+        "data": {
+          "description": "Executes custom JavaScript code on the input data.",
+          "showRunningStatus": true,
+          "_morphing": false,
+          "name": "function",
+          "label": "PrepareAssignNew",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "code": "return {\n  userId: outputs.GenerateCourseWebhook.success.body.userId,\n  courseId: outputs.InsertCourse.success.rows[0].id\n}"
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": -420.36854300008673,
+          "y": 930.9730830268076
+        },
+        "width": 64,
+        "height": 64,
+        "selected": false,
+        "id": "y67xz6ekzax2fj1ns2u5ty8r",
+        "type": "action",
+        "data": {
+          "description": "Checks if a course with the given topic already exists in the database before generating a new one.",
+          "showRunningStatus": true,
+          "_morphing": false,
+          "name": "postgres action",
+          "label": "CheckAlreadyAssigned",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "port": 5432,
+            "schemaName": "public",
+            "connectionTimeoutMillis": 5000,
+            "host": "YOUR_SUPABASE_HOST",
+            "user": "YOUR_SUPABASE_USER",
+            "password": "YOUR_SUPABASE_PASSWORD",
+            "database": "postgres",
+            "tableName": "user_courses",
+            "operation": "Execute SQL query",
+            "executeQueryParams": {
+              "query": "SELECT * FROM user_courses WHERE user_id = '{{outputs.PrepareAssignExisting.success.userId}}'::bigint AND course_id = '{{outputs.PrepareAssignExisting.success.courseId}}'::bigint"
+            },
+            "replaceEmptyStringWithNull": false,
+            "selectParams": {
+              "returnAll": false
+            },
+            "insertParams": {
+              "skipOnConflict": false
+            },
+            "deleteParams": {
+              "cascade": false
+            }
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": -252.2853539294863,
+          "y": 930.5714797364143
+        },
+        "width": 64,
+        "height": 68,
+        "selected": false,
+        "id": "jqjf1233qnezvbu0zn9mq1af",
+        "type": "utility",
+        "data": {
+          "description": "Executes different branches based on a condition",
+          "showRunningStatus": false,
+          "_morphing": false,
+          "name": "if-else",
+          "label": "AlreadyAssigned?",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "true": {
+              "label": "True",
+              "isConnectable": null
+            },
+            "false": {
+              "label": "False",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "condition": "outputs.CheckAlreadyAssigned.success.rows.length > 0"
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      },
+      {
+        "position": {
+          "x": 71.5504366928065,
+          "y": 920.3264343195546
+        },
+        "width": 64,
+        "height": 64,
+        "selected": false,
+        "id": "cuyhjcuncw23svi8jb61rxu0",
+        "type": "action",
+        "data": {
+          "description": "Responds to a webhook with a specific message.",
+          "showRunningStatus": false,
+          "_morphing": false,
+          "name": "respond-to-webhook",
+          "label": "GenerateCourseResponse1",
+          "inputs": {
+            "input": {
+              "label": "Input"
+            }
+          },
+          "outputs": {
+            "success": {
+              "label": "Success",
+              "isConnectable": null
+            },
+            "error": {
+              "label": "Error",
+              "isConnectable": null
+            }
+          },
+          "parameters": {
+            "responseCode": 200,
+            "responseBody": {
+              "success": true,
+              "message": "already_assigned"
+            }
+          },
+          "defaultOutput": null
+        },
+        "inputs": null,
+        "outputs": null
+      }
+    ],
+    "connections": [
+      {
+        "type": "directed",
+        "id": "xy-edge__mmccqjiq3ge750gbhr9txkx4success-f5g270hymzfn7me7j9i4g804input",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "mmccqjiq3ge750gbhr9txkx4",
+        "target": "f5g270hymzfn7me7j9i4g804",
+        "sourceHandle": "success",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__esrxqc4f3py6pgozbqjitc2bsuccess-hq3pow47uzzipq4txtpq6xeainput",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "esrxqc4f3py6pgozbqjitc2b",
+        "target": "hq3pow47uzzipq4txtpq6xea",
+        "sourceHandle": "success",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__hq3pow47uzzipq4txtpq6xeatrue-mmccqjiq3ge750gbhr9txkx4input",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "hq3pow47uzzipq4txtpq6xea",
+        "target": "mmccqjiq3ge750gbhr9txkx4",
+        "sourceHandle": "true",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__hq3pow47uzzipq4txtpq6xeafalse-ey2tpkaq7bi5uhch2r6xd9fginput",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "hq3pow47uzzipq4txtpq6xea",
+        "target": "ey2tpkaq7bi5uhch2r6xd9fg",
+        "sourceHandle": "false",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__rmnp3czdiaboaaseamvoqbzxsuccess-ukurslxm0u45nmpngybjdqe2input",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "rmnp3czdiaboaaseamvoqbzx",
+        "target": "ukurslxm0u45nmpngybjdqe2",
+        "sourceHandle": "success",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__ukurslxm0u45nmpngybjdqe2false-dye9mfjienlgptiwtm6oloioinput",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "ukurslxm0u45nmpngybjdqe2",
+        "target": "dye9mfjienlgptiwtm6oloio",
+        "sourceHandle": "false",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__sv8z309f0j5rinmeuq7roc6nsuccess-esrxqc4f3py6pgozbqjitc2binput",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "sv8z309f0j5rinmeuq7roc6n",
+        "target": "esrxqc4f3py6pgozbqjitc2b",
+        "sourceHandle": "success",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__j8rabt6bsiw18vyn388zssa2success-u7w9a4r026cybgbrnoce330yinput",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "j8rabt6bsiw18vyn388zssa2",
+        "target": "u7w9a4r026cybgbrnoce330y",
+        "sourceHandle": "success",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__u7w9a4r026cybgbrnoce330ysuccess-rmnp3czdiaboaaseamvoqbzxinput",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "u7w9a4r026cybgbrnoce330y",
+        "target": "rmnp3czdiaboaaseamvoqbzx",
+        "sourceHandle": "success",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__xw966jvf65jcjv803l0e7ffdsuccess-royg6g64896gj3w44wcwuc0ninput",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "xw966jvf65jcjv803l0e7ffd",
+        "target": "royg6g64896gj3w44wcwuc0n",
+        "sourceHandle": "success",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__l4eccrehjhbvhrfp34fytsensuccess-xw966jvf65jcjv803l0e7ffdinput",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "l4eccrehjhbvhrfp34fytsen",
+        "target": "xw966jvf65jcjv803l0e7ffd",
+        "sourceHandle": "success",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__royg6g64896gj3w44wcwuc0nsuccess-yo06a5iue1x6zq113kq1rykginput",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "royg6g64896gj3w44wcwuc0n",
+        "target": "yo06a5iue1x6zq113kq1rykg",
+        "sourceHandle": "success",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__incu4c40g0h9mjpjq2zsrng3success-a87xl3rxayxgljrd5a5q3lb4input",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "incu4c40g0h9mjpjq2zsrng3",
+        "target": "a87xl3rxayxgljrd5a5q3lb4",
+        "sourceHandle": "success",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__ukurslxm0u45nmpngybjdqe2true-rwwdvtxa3ndi26on2ifn1nywinput",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "ukurslxm0u45nmpngybjdqe2",
+        "target": "rwwdvtxa3ndi26on2ifn1nyw",
+        "sourceHandle": "true",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__rwwdvtxa3ndi26on2ifn1nywsuccess-zuk7k799ef714pud33yjg09winput",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "rwwdvtxa3ndi26on2ifn1nyw",
+        "target": "zuk7k799ef714pud33yjg09w",
+        "sourceHandle": "success",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__a87xl3rxayxgljrd5a5q3lb4success-hf3dobdckwy6okob1i3sz0ukinput",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "a87xl3rxayxgljrd5a5q3lb4",
+        "target": "hf3dobdckwy6okob1i3sz0uk",
+        "sourceHandle": "success",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__hf3dobdckwy6okob1i3sz0uktrue-csaiu03929eyqodw4vhswe98input",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "hf3dobdckwy6okob1i3sz0uk",
+        "target": "csaiu03929eyqodw4vhswe98",
+        "sourceHandle": "true",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__hf3dobdckwy6okob1i3sz0ukfalse-alt87vcj40i8z1bgv11hpv7yinput",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "hf3dobdckwy6okob1i3sz0uk",
+        "target": "alt87vcj40i8z1bgv11hpv7y",
+        "sourceHandle": "false",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__alt87vcj40i8z1bgv11hpv7ycase-1-nvzj1nwcvsb7ehjfa3n8m9cginput",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "alt87vcj40i8z1bgv11hpv7y",
+        "target": "nvzj1nwcvsb7ehjfa3n8m9cg",
+        "sourceHandle": "case-1",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__alt87vcj40i8z1bgv11hpv7ydefault-sv8z309f0j5rinmeuq7roc6ninput",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "alt87vcj40i8z1bgv11hpv7y",
+        "target": "sv8z309f0j5rinmeuq7roc6n",
+        "sourceHandle": "default",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__alt87vcj40i8z1bgv11hpv7ycase-2-mdnar7dn6e1xyaeltm19kn94input",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "alt87vcj40i8z1bgv11hpv7y",
+        "target": "mdnar7dn6e1xyaeltm19kn94",
+        "sourceHandle": "case-2",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__m75jlogjuqy0e15nmhk863p9success-ce2r5hzeza8cqzp25i1c0no1input",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "m75jlogjuqy0e15nmhk863p9",
+        "target": "ce2r5hzeza8cqzp25i1c0no1",
+        "sourceHandle": "success",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__ce2r5hzeza8cqzp25i1c0no1success-w5ydcmzp2vqrwtroqcnhozzrinput",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "ce2r5hzeza8cqzp25i1c0no1",
+        "target": "w5ydcmzp2vqrwtroqcnhozzr",
+        "sourceHandle": "success",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__l09y57w47wljpfpl9vc764ausuccess-d5bzlqycf3ps27fnnzn7nwiiinput",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "l09y57w47wljpfpl9vc764au",
+        "target": "d5bzlqycf3ps27fnnzn7nwii",
+        "sourceHandle": "success",
+        "targetHandle": "input"
+      },
+      {
+        "type": "agentConnection",
+        "id": "xy-edge__e7wubc7paco0eo9vaxzyjzs9llm-plle0ml1zwwhqhvxi59f1hvnllm",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "e7wubc7paco0eo9vaxzyjzs9",
+        "target": "plle0ml1zwwhqhvxi59f1hvn",
+        "sourceHandle": "llm",
+        "targetHandle": "llm"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__cc91zjtwule0zv4iue81ha9esuccess-ag29ymle6gli129bapc8wj03input",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "cc91zjtwule0zv4iue81ha9e",
+        "target": "ag29ymle6gli129bapc8wj03",
+        "sourceHandle": "success",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__ag29ymle6gli129bapc8wj03success-xhyoejkt1jt8rsdoz8sb45jdinput",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "ag29ymle6gli129bapc8wj03",
+        "target": "xhyoejkt1jt8rsdoz8sb45jd",
+        "sourceHandle": "success",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__xhyoejkt1jt8rsdoz8sb45jdsuccess-nteoizso3rek390arxkbtnulinput",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "xhyoejkt1jt8rsdoz8sb45jd",
+        "target": "nteoizso3rek390arxkbtnul",
+        "sourceHandle": "success",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__i6xt0kb4iw6iyvxeyignrro7success-cc91zjtwule0zv4iue81ha9einput",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "i6xt0kb4iw6iyvxeyignrro7",
+        "target": "cc91zjtwule0zv4iue81ha9e",
+        "sourceHandle": "success",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__nteoizso3rek390arxkbtnulsuccess-d3948kqjti2jcfnbeed2nr0kinput",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "nteoizso3rek390arxkbtnul",
+        "target": "d3948kqjti2jcfnbeed2nr0k",
+        "sourceHandle": "success",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__plle0ml1zwwhqhvxi59f1hvnsuccess-i6xt0kb4iw6iyvxeyignrro7input",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "plle0ml1zwwhqhvxi59f1hvn",
+        "target": "i6xt0kb4iw6iyvxeyignrro7",
+        "sourceHandle": "success",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__w5ydcmzp2vqrwtroqcnhozzrfalse-hyppjsmhdr27qt9b9jv9w3d2input",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "w5ydcmzp2vqrwtroqcnhozzr",
+        "target": "hyppjsmhdr27qt9b9jv9w3d2",
+        "sourceHandle": "false",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__hyppjsmhdr27qt9b9jv9w3d2success-plle0ml1zwwhqhvxi59f1hvninput",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "hyppjsmhdr27qt9b9jv9w3d2",
+        "target": "plle0ml1zwwhqhvxi59f1hvn",
+        "sourceHandle": "success",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__d3948kqjti2jcfnbeed2nr0ksuccess-epwa3q6mz49mo8nt6cfcp2cainput",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "d3948kqjti2jcfnbeed2nr0k",
+        "target": "epwa3q6mz49mo8nt6cfcp2ca",
+        "sourceHandle": "success",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__epwa3q6mz49mo8nt6cfcp2casuccess-gl9d6c1ojzonpikpfd5xpvqvinput",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "epwa3q6mz49mo8nt6cfcp2ca",
+        "target": "gl9d6c1ojzonpikpfd5xpvqv",
+        "sourceHandle": "success",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__gl9d6c1ojzonpikpfd5xpvqvsuccess-csbg2yi98sg3qcqouqrxevbxinput",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "gl9d6c1ojzonpikpfd5xpvqv",
+        "target": "csbg2yi98sg3qcqouqrxevbx",
+        "sourceHandle": "success",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__y67xz6ekzax2fj1ns2u5ty8rsuccess-jqjf1233qnezvbu0zn9mq1afinput",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "y67xz6ekzax2fj1ns2u5ty8r",
+        "target": "jqjf1233qnezvbu0zn9mq1af",
+        "sourceHandle": "success",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__jqjf1233qnezvbu0zn9mq1aftrue-cuyhjcuncw23svi8jb61rxu0input",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "jqjf1233qnezvbu0zn9mq1af",
+        "target": "cuyhjcuncw23svi8jb61rxu0",
+        "sourceHandle": "true",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__w5ydcmzp2vqrwtroqcnhozzrtrue-xglffaw0adg3yf5h4aesimhwinput",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "w5ydcmzp2vqrwtroqcnhozzr",
+        "target": "xglffaw0adg3yf5h4aesimhw",
+        "sourceHandle": "true",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__xglffaw0adg3yf5h4aesimhwsuccess-y67xz6ekzax2fj1ns2u5ty8rinput",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "xglffaw0adg3yf5h4aesimhw",
+        "target": "y67xz6ekzax2fj1ns2u5ty8r",
+        "sourceHandle": "success",
+        "targetHandle": "input"
+      },
+      {
+        "type": "directed",
+        "id": "xy-edge__jqjf1233qnezvbu0zn9mq1affalse-l09y57w47wljpfpl9vc764auinput",
+        "data": {
+          "isAnimated": false
+        },
+        "source": "jqjf1233qnezvbu0zn9mq1af",
+        "target": "l09y57w47wljpfpl9vc764au",
+        "sourceHandle": "false",
+        "targetHandle": "input"
+      }
+    ],
+    "status": "stopped",
+    "id": "5e51b867-9527-4b2b-b696-c91b1f500cc7",
+    "createdAt": 1776775740380,
+    "updatedAt": "2026-04-23T20:14:49.012Z",
+    "previousStatus": "running"
+  }
+]
